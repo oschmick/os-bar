@@ -32,6 +32,8 @@ void *customer(void *args) {
  */
 void custTravelToBar(unsigned int custID) {
 	printf("Cust %u\t\t\t\t\t\t\t\t\t\t\t|\n", custID);
+	int random = (rand() % (5000-20+1))+20;
+	usleep(random*1000);
 }
 
 /**
@@ -40,7 +42,9 @@ void custTravelToBar(unsigned int custID) {
  * TODO - SYNCHRONIZE ME
  */
 void custArriveAtBar(unsigned int custID) {
+	sem_wait(customer_leaves);
 	printf("\t\tCust %u\t\t\t\t\t\t\t\t\t|\n", custID);
+	sem_post(customer_enters);
 }
 
 /**
@@ -49,6 +53,7 @@ void custArriveAtBar(unsigned int custID) {
  */
 void custPlaceOrder(unsigned int custID) {
 	printf("\t\t\t\tCust %u\t\t\t\t\t\t\t|\n", custID);
+	sem_post(order);
 }
 
 /**
@@ -57,6 +62,8 @@ void custPlaceOrder(unsigned int custID) {
  */
 void custBrowseArt(unsigned int custID) {
 	printf("\t\t\t\t\t\tCust %u\t\t\t\t\t|\n", custID);
+	int random = (rand() % (5000-3+1))+3;
+	usleep(random*1000);
 }
 
 /**
@@ -66,6 +73,8 @@ void custBrowseArt(unsigned int custID) {
  */
 void custAtRegister(unsigned int custID) {
 	printf("\t\t\t\t\t\t\t\tCust %u\t\t\t|\n", custID);
+	sem_wait(drink_made);
+	sem_post(pay_bartender);
 }
 
 /**
@@ -73,4 +82,5 @@ void custAtRegister(unsigned int custID) {
  */
 void custLeaveBar(unsigned int custID) {
 	printf("\t\t\t\t\t\t\t\t\t\tCust %u\t|\n", custID);
+	sem_post(customer_leaves);
 }

@@ -30,6 +30,7 @@ void *bartender(void *args) {
  */
 void waitForCustomer() {
 	printf("\t\t\t\t\t\t\t\t\t\t\t| Bartender\n");
+	sem_wait(customer_enters);
 }
 
 /**
@@ -38,7 +39,11 @@ void waitForCustomer() {
  * TODO - SYNCHRONIZE ME
  */
 void makeDrink() {
+	sem_wait(order);
 	printf("\t\t\t\t\t\t\t\t\t\t\t| \t\tBartender\n");
+	int random = (rand() % (1000-5+1))+5;
+	usleep(random*1000);
+	sem_post(drink_made);
 }
 
 /**
@@ -48,6 +53,8 @@ void makeDrink() {
 void receivePayment() {
 	// at the register waiting for customer to pay
 	printf("\t\t\t\t\t\t\t\t\t\t\t| \t\t\t\tBartender\n");
+	
+	sem_wait(pay_bartender);
 
 	// got paid by the customer!
 	printf("\t\t\t\t\t\t\t\t\t\t\t| \t\t\t\t\t\tBartender\n");
